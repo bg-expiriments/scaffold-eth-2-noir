@@ -1,5 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
+// TODO: import verifier contract from noir
 
 /**
  * Deploys a contract named "YourContract" using the deployer account and
