@@ -1,7 +1,7 @@
 import path from "path";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile, writeFile } from "fs/promises";
 
-const circuits: any = {};
+const TARGET_FILE = "../nextjs/generated/circuits.json";
 
 function getPath(fileName?: string) {
   if (!fileName) {
@@ -9,16 +9,20 @@ function getPath(fileName?: string) {
   }
   return path.resolve(process.cwd(), "./circuits/src", fileName);
 }
-// TODO: remove all this since we use public-folder in nextjs
 
-export async function setup() {
+export async function getCircuits() {
+  const circuits: any = {};
   const circuitPaths = await readdir(getPath());
   for (const p of circuitPaths) {
     // console.log("🗒 path: ", p);
     circuits[p] = await readFile(getPath(p), "utf8");
   }
-}
-
-export async function getCircuits() {
   return circuits;
 }
+
+async function exportAsJson() {
+  const circuits = await getCircuits();
+  await writeFile(path.resolve(TARGET_FILE), JSON.stringify(circuits, null, 2));
+}
+
+exportAsJson();

@@ -1,11 +1,9 @@
 import { expect } from "chai";
-import { setup, getCircuits } from "../src/index";
+import { getCircuits } from "../scripts/export_circuits_src";
+
+// TODO: this file should actually test the circuits
 
 describe("circuit source-code getter", function () {
-  before(async function () {
-    await setup();
-  });
-
   it("should return circuit", async function () {
     const circuits = await getCircuits();
     expect(Object.keys(circuits).length).to.equal(1);
