@@ -12,10 +12,16 @@ const buildHardhatEslintCommand = (filenames) =>
     .map((f) => path.relative(path.join("packages", "hardhat"), f))
     .join(" ")}`;
 
+const buildNoirEslintCommand = (filenames) =>
+  `yarn noir:lint-staged --fix ${filenames
+    .map((f) => path.relative(path.join("packages", "noir"), f))
+    .join(" ")}`;
+
 module.exports = {
   "packages/nextjs/**/*.{ts,tsx}": [
     buildNextEslintCommand,
     checkTypesNextCommand,
   ],
   "packages/hardhat/**/*.{ts,tsx}": [buildHardhatEslintCommand],
+  "packages/noir/**/*.{ts,tsx}": [buildNoirEslintCommand],
 };
