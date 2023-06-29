@@ -1,8 +1,14 @@
 import { expect } from "chai";
-import { getHelloWorld } from "../src/index";
+import { setup, getCircuits } from "../src/index";
 
-describe("hello world", function () {
-  it("should return hello world", async function () {
-    expect(getHelloWorld()).to.equal("Hello World!");
+describe("circuit source-code getter", function () {
+  before(async function () {
+    await setup();
+  });
+
+  it("should return circuit", async function () {
+    const circuits = await getCircuits();
+    expect(Object.keys(circuits).length).to.equal(1);
+    expect(circuits["main.nr"]).to.be.a("string");
   });
 });
