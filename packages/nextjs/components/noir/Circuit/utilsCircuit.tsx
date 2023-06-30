@@ -1,6 +1,5 @@
 import { Circuit, CircuitName } from "~~/utils/noir/circuit";
 
-console.log("utilsCircuit.tsx");
 const getCircuitParams = (abi: Circuit<CircuitName>["abi"] | null): { params: (JSX.Element | null)[] } => {
   if (!abi) return { params: [] };
   const params = abi.parameters
@@ -20,6 +19,5 @@ const getCircuitParams = (abi: Circuit<CircuitName>["abi"] | null): { params: (J
   return { params };
 };
 
-console.log(getCircuitParams);
 // TODO: return-values
 export { getCircuitParams };
