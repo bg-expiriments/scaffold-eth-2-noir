@@ -52,9 +52,9 @@ export const Header = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink href="/noir-ui">
+        <NavLink href="/debug-noir">
           <SunIcon className="h-4 w-4" />
-          Noir UI
+          Debug Noir Circuits
         </NavLink>
       </li>
       <li>

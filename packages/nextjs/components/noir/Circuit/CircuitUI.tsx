@@ -1,4 +1,7 @@
-import { CircuitName } from "~~/utils/noir";
+import { useMemo } from "react";
+import { getCircuitParams } from "~~/components/noir";
+import { useCircuitAbi } from "~~/hooks/noir";
+import { CircuitName } from "~~/utils/noir/circuit";
 
 type CircuitUIProps = {
   circuitName: CircuitName;
@@ -6,9 +9,16 @@ type CircuitUIProps = {
 };
 
 /**
- * UI component to interface with deployed circuits.
+ * UI component to interface with circuits.
  **/
-export const CircuitUI = ({ circuitName = "", className = "" }: CircuitUIProps) => {
+export const CircuitUI = ({ circuitName, className = "" }: CircuitUIProps) => {
+  const { abi } = useCircuitAbi(circuitName);
+  const circuitPrametersDisplay = useMemo(() => getCircuitParams(abi), [abi]);
+
+  if (!abi) {
+    return <p className="text-3xl mt-14">{`No ABI found for the circuit "${circuitName}"!`}</p>;
+  }
+
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-6 px-6 lg:px-10 lg:gap-12 w-full max-w-7xl my-0 ${className}`}>
       <div className="col-span-5 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
@@ -21,12 +31,15 @@ export const CircuitUI = ({ circuitName = "", className = "" }: CircuitUIProps) 
             </div>
           </div>
         </div>
+        <div className="bg-base-300 rounded-3xl px-6 lg:px-8 py-4 shadow-lg shadow-base-300">
+          {abi.parameters.length > 0 ? circuitPrametersDisplay.params : "No contract variables"}
+        </div>
         <div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
           <div className="z-10">
             <div className="bg-base-100 rounded-3xl shadow-md shadow-secondary border border-base-300 flex flex-col mt-10 relative">
               <div className="h-[5rem] w-[5.5rem] bg-base-300 absolute self-start rounded-[22px] -top-[38px] -left-[1px] -z-10 py-[0.65rem] shadow-lg shadow-base-300">
                 <div className="flex items-center justify-center space-x-2">
-                  <p className="my-0 text-sm">Read</p>
+                  <p className="my-0 text-sm">Private</p>
                 </div>
               </div>
               <div className="p-5 divide-y divide-base-300"></div>
@@ -36,7 +49,7 @@ export const CircuitUI = ({ circuitName = "", className = "" }: CircuitUIProps) 
             <div className="bg-base-100 rounded-3xl shadow-md shadow-secondary border border-base-300 flex flex-col mt-10 relative">
               <div className="h-[5rem] w-[5.5rem] bg-base-300 absolute self-start rounded-[22px] -top-[38px] -left-[1px] -z-10 py-[0.65rem] shadow-lg shadow-base-300">
                 <div className="flex items-center justify-center space-x-2">
-                  <p className="my-0 text-sm">Write</p>
+                  <p className="my-0 text-sm">Public</p>
                 </div>
               </div>
               <div className="p-5 divide-y divide-base-300"></div>
