@@ -1,28 +1,37 @@
+import { compile } from "@noir-lang/noir_wasm";
+import { initialiseResolver } from "@noir-lang/noir-source-resolver";
+
 import path from "path";
-import { readdir, readFile, writeFile } from "fs/promises";
+import { readFileSync, writeFileSync } from "fs";
 
 const TARGET_FILE = "../nextjs/generated/circuits.json";
+const CIRCUIT_PATH = "./circuits/src/";
+const CIRCUIT_ROOTS = ["main.nr"];
 
-function getPath(fileName?: string) {
-  if (!fileName) {
-    return path.resolve(process.cwd(), "./circuits/src");
+function fileResolverCallback(id: string) {
+  try {
+    console.log("🤓 trying to read circuit: ", id);
+    const code = readFileSync(CIRCUIT_PATH + id, "utf8") as string;
+    return code;
+  } catch (err) {
+    console.error(`❌ error when reading file (${id}) with error: ${(err as Error).stack}\n`);
+    throw err;
   }
-  return path.resolve(process.cwd(), "./circuits/src", fileName);
-}
-
-export async function getCircuits() {
-  const circuits: any = {};
-  const circuitPaths = await readdir(getPath());
-  for (const p of circuitPaths) {
-    // console.log("🗒 path: ", p);
-    circuits[p] = await readFile(getPath(p), "utf8");
-  }
-  return circuits;
 }
 
 async function exportAsJson() {
-  const circuits = await getCircuits();
-  await writeFile(path.resolve(TARGET_FILE), JSON.stringify(circuits, null, 2));
+  initialiseResolver(fileResolverCallback);
+  const data: any = {};
+  try {
+    for (const fileName of CIRCUIT_ROOTS) {
+      data[fileName] = await compile({
+        entry_point: fileName,
+      });
+    }
+  } catch (err) {
+    console.error("Error while compiling:", (err as Error).stack);
+  }
+  writeFileSync(path.resolve(TARGET_FILE), JSON.stringify(data, null, 2));
 }
 
 exportAsJson();
