@@ -14,6 +14,7 @@
     "@types/chai": "^4.3.5",
     "@types/eslint": "^8",
     "@types/mocha": "^9.1.1",
+    "@types/node": "^20.3.2",
     "@types/prettier": "^2",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -27,9 +28,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@noir-lang/barretenberg": "^2.19.0",
-    "@noir-lang/noir-source-resolver": "^1.1.2",
-    "@noir-lang/noir_wasm": "0.3.2-fa0e9cff",
+    "@noir-lang/noir-source-resolver": "1.1.1",
+    "@noir-lang/noir_wasm": "0.6.0-77fba56",
     "dotenv": "^16.0.3",
     "envfile": "^6.18.0"
   }

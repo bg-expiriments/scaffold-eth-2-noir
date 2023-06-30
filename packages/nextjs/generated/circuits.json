@@ -1,3 +1,1 @@
-{
-  "main.nr": "fn is_not_equal(x : Field, y : Field) -> bool {\n    x != y\n}\n\nfn main(x : Field, y : pub Field) {\n    assert(is_not_equal(x, y));\n}\n\n#[test]\nfn test_main() {\n    main(1, 2);\n    main(2, 1);\n    // TODO: is there a way to test that main fails without actually having it return a bool?\n}\n\n#[test]\nfn test_is_not_equal() {\n    let res2 = is_not_equal(1, 1);\n    assert(res2 == false);\n}\n"
-}
+{}
