@@ -24,7 +24,8 @@ async function exportAsJson() {
   const data: any = {};
   try {
     for (const fileName of CIRCUIT_ROOTS) {
-      data[fileName] = await compile({
+      const key = fileName.split(".")[0];
+      data[key] = await compile({
         entry_point: fileName,
       });
     }

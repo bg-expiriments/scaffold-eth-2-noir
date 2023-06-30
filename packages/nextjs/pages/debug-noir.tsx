@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 import { useLocalStorage } from "usehooks-ts";
 import { MetaHeader } from "~~/components/MetaHeader";
-import { CircuitUI } from "~~/components/noir-ui/Circuit";
-import { CircuitName } from "~~/utils/noir";
+import { CircuitUI } from "~~/components/noir/Circuit";
+import { CircuitName } from "~~/utils/noir/circuit";
+import { getCircuitNames } from "~~/utils/noir/circuitNames";
 
 const selectedCircuitStorageKey = "scaffoldEth2.selectedCircuit";
 
 const NoirUI: NextPage = () => {
-  const circuitNames = ["main.nr"];
+  const circuitNames = getCircuitNames();
   const [selectedCircuit, setSelectedCircuit] = useLocalStorage<CircuitName>(
     selectedCircuitStorageKey,
     circuitNames[0],
@@ -45,7 +46,7 @@ const NoirUI: NextPage = () => {
           You can debug & interact with your deployed Noir-circuits here.
           <br /> Check{" "}
           <code className="italic bg-base-300 text-base font-bold [word-spacing:-0.5rem] px-1">
-            packages / nextjs / pages / noir-ui.tsx
+            packages / nextjs / pages / debug-noir.tsx
           </code>{" "}
         </p>
       </div>
