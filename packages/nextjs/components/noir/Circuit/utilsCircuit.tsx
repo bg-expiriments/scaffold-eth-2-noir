@@ -1,23 +1,22 @@
-import { Circuit, CircuitName } from "~~/utils/noir/circuit";
+import { CircuitAbiParameters, CircuitName } from "~~/utils/noir/circuit";
 
-const getCircuitParams = (abi: Circuit<CircuitName>["abi"] | null): { params: (JSX.Element | null)[] } => {
-  if (!abi) return { params: [] };
-  const params = abi.parameters
-    .map(param => {
-      if (param.name && param.type && param.visibility) {
-        return (
-          <div key={param.name} className="flex flex-col gap-1">
-            <span className="font-bold">{param.name}</span>
-            <span className="text-sm">{param.type.kind}</span>
-            <span className="text-sm">{param.visibility}</span>
-          </div>
-        );
-      }
-      return null;
-    })
-    .filter(n => n);
-  return { params };
+const getFunctionInputKey = (
+  circuitName: CircuitName,
+  input: CircuitAbiParameters[number],
+  inputIndex: number,
+): string => {
+  const name = input.name || `input_${inputIndex}_`;
+  return circuitName + "_" + name + "_" + input.type.kind + "_" + input.visibility;
+};
+
+const getInitialFormState = (circuitName: CircuitName, params: CircuitAbiParameters) => {
+  const initialForm: Record<string, any> = {};
+  params.forEach((p, index) => {
+    const key = getFunctionInputKey(circuitName, p, index);
+    initialForm[key] = "";
+  });
+  return initialForm;
 };
 
 // TODO: return-values
-export { getCircuitParams };
+export { getInitialFormState, getFunctionInputKey };
