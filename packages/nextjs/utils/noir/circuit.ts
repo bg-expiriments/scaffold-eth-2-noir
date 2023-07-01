@@ -43,6 +43,9 @@ export type Circuits = typeof circuits;
 
 export type Circuit<TCircuitName extends CircuitName> = Circuits[TCircuitName];
 
+export type CircuitAbiParameters = Circuit<CircuitName>["abi"]["parameters"];
+export type CircuitAbi = Circuit<CircuitName>["abi"];
+
 export enum CircuitCodeStatus {
   "FOUND",
   "NOT_FOUND",
