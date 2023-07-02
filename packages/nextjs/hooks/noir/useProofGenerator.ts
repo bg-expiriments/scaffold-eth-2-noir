@@ -17,7 +17,6 @@ const circuitProofs: Partial<
   >
 > = {};
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getAcir = async (circuitName: CircuitName) => {
   if (!isInitialised) {
     await initNoirWasm();
