@@ -24,6 +24,8 @@ export const CallFormInput = ({ setForm, form, stateObjectKey, param }: CallForm
 
   if (param.type.kind === "string") {
     return <InputBase {...inputProps} />;
+  } else if (param.type.kind === "field") {
+    // TODO...
   } else {
     console.error("Unsupported param type:", param.type.kind);
   }
