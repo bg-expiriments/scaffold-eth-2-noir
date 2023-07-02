@@ -1,8 +1,11 @@
-import { CircuitName } from "~~/utils/noir/circuit";
+import initialiseAztecBackend from "@noir-lang/aztec_backend";
+import initNoirWasm, { acir_read_bytes } from "@noir-lang/noir_wasm";
+import { CircuitName, circuits } from "~~/utils/noir/circuit";
 
 // TODO: where should this live?
 export type Proof = string;
 
+let isInitialised = false;
 let isRunning = false;
 const circuitProofs: Partial<
   Record<
@@ -13,6 +16,17 @@ const circuitProofs: Partial<
     }
   >
 > = {};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getAcir = async (circuitName: CircuitName) => {
+  if (!isInitialised) {
+    await initNoirWasm();
+    await initialiseAztecBackend();
+    isInitialised = true;
+  }
+  const acir_ints = circuits[circuitName].circuit;
+  return acir_read_bytes(acir_ints);
+};
 
 const generateProofWrapper = (circuitName: CircuitName, parsedArgs?: any) => {
   console.log("generateProofWrapper", circuitName, parsedArgs);
@@ -34,7 +48,7 @@ const generateProofWrapper = (circuitName: CircuitName, parsedArgs?: any) => {
 };
 
 export default function useProofGenerator(circuitName: CircuitName, form: any) {
-  if (!circuitProofs[circuitName]) {
+  if (circuitProofs[circuitName] === undefined) {
     circuitProofs[circuitName] = {
       resultPromise: new Promise(r => r("hej")),
       result: "",
