@@ -10,7 +10,7 @@ const CIRCUIT_ROOTS = ["main.nr"];
 
 function fileResolverCallback(id: string) {
   try {
-    console.log("🤓 trying to read circuit: ", id);
+    console.log("🤓 trying to read circuit: ", CIRCUIT_PATH + id);
     const code = readFileSync(CIRCUIT_PATH + id, "utf8") as string;
     return code;
   } catch (err) {
@@ -30,7 +30,7 @@ async function exportAsJson() {
       });
     }
   } catch (err) {
-    console.error("Error while compiling:", (err as Error).stack);
+    console.error("Error while compiling:", err);
   }
   writeFileSync(path.resolve(TARGET_FILE), JSON.stringify(data, null, 2));
 }
