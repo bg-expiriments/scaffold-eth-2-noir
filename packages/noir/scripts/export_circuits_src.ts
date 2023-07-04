@@ -1,20 +1,23 @@
-import { compile } from "@noir-lang/noir_wasm";
 import { initialiseResolver } from "@noir-lang/noir-source-resolver";
+import { compile } from "@noir-lang/noir_wasm";
 
-import path from "path";
 import { readFileSync, writeFileSync } from "fs";
+import { readdir } from "fs/promises";
+import path from "path";
 
 const TARGET_FILE = "../nextjs/generated/circuits.json";
-const CIRCUIT_PATH = "./circuits/src/";
-const CIRCUIT_ROOTS = ["main.nr"];
+const CIRCUITS_FOLDER_PATH = "./circuits";
+
+let currentProject = "";
 
 function fileResolverCallback(id: string) {
   try {
-    console.log("🤓 trying to read circuit: ", id);
-    const code = readFileSync(CIRCUIT_PATH + id, "utf8") as string;
+    const path = `${CIRCUITS_FOLDER_PATH}/${currentProject}/src/${id}`;
+    console.log("🤓 trying to read:", path);
+    const code = readFileSync(path, "utf8") as string;
     return code;
-  } catch (err) {
-    console.error(`❌ error when reading file (${id}) with error: ${(err as Error).stack}\n`);
+  } catch (err: any) {
+    console.error(`❌ error when reading file (${id}) with error: ${err.stack}\n`);
     throw err;
   }
 }
@@ -22,12 +25,11 @@ function fileResolverCallback(id: string) {
 async function exportAsJson() {
   initialiseResolver(fileResolverCallback);
   const data: any = {};
+  const circuits = await readdir(CIRCUITS_FOLDER_PATH);
   try {
-    for (const fileName of CIRCUIT_ROOTS) {
-      const key = fileName.split(".")[0];
-      data[key] = await compile({
-        entry_point: fileName,
-      });
+    for (const name of circuits) {
+      currentProject = name;
+      data[name] = await compile({});
     }
   } catch (err) {
     console.error("Error while compiling:", (err as Error).stack);

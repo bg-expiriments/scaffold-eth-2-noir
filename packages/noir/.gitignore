@@ -5,3 +5,4 @@ coverage.json
 temp
 *Prover.toml
 *Verifier.toml
+*plonk_vk.sol
