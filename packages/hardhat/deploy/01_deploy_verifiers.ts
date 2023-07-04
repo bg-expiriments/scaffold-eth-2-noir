@@ -25,7 +25,7 @@ const deployVerifiers: DeployFunction = async function (hre: HardhatRuntimeEnvir
   const { deploy } = hre.deployments;
   const verifiers = await readdir("contracts/verifiers");
 
-  const deployPromises = verifiers.map(async contractName => {
+  for (const contractName of verifiers) {
     const name = "Verifier" + contractName.replace(".sol", "");
     await deploy(name, {
       from: deployer,
@@ -38,9 +38,7 @@ const deployVerifiers: DeployFunction = async function (hre: HardhatRuntimeEnvir
       autoMine: true,
     });
     contractTags.push(name);
-  });
-
-  await Promise.all(deployPromises);
+  }
 
   // Get the deployed contract
   // const yourContract = await hre.ethers.getContract("YourContract", deployer);

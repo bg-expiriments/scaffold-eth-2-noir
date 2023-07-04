@@ -5,7 +5,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         VerifierLessThen: {
-          address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+          address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
           abi: [
             {
               inputs: [],
@@ -88,7 +88,7 @@ const contracts = {
           ],
         },
         VerifierNotEq: {
-          address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+          address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
           abi: [
             {
               inputs: [],
@@ -171,7 +171,7 @@ const contracts = {
           ],
         },
         YourContract: {
-          address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+          address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
           abi: [
             {
               inputs: [
