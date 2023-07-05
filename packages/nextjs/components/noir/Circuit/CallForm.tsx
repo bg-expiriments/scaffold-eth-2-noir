@@ -27,6 +27,7 @@ export const CallForm = ({ circuitName, params }: TCallFormProps) => {
       const proofProm = generateProof();
       withNotifications(proofProm);
       const res = await proofProm;
+      // TODO: below does not refresh the UI
       setDisplayedGenerationResult(res);
     } catch (e: any) {
       notification.error(e.message);
