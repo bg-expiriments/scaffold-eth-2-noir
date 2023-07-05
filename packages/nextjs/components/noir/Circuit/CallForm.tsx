@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CallFormInput } from "./CallFormInput";
 import { ProofResult } from "./Proof";
 import { getFunctionInputKey, getInitialFormState } from "./utilsCircuit";
-import useProofGenerator, { Proof } from "~~/hooks/noir/useProofGenerator";
+import useProofGenerator from "~~/hooks/noir/useProofGenerator";
 import { useProvingNotifications } from "~~/hooks/noir/useProvingNotifications";
+import { Proof } from "~~/interfaces";
 import { CircuitAbiParameters, CircuitName } from "~~/utils/noir/circuit";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -15,18 +16,15 @@ type TCallFormProps = {
 export const CallForm = ({ circuitName, params }: TCallFormProps) => {
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(circuitName, params));
   const withNotifications = useProvingNotifications();
-  const { result, isLoading, generateProof } = useProofGenerator(circuitName, form);
+  const { isLoading, generateProof } = useProofGenerator(circuitName, form);
   const [displayedGenerationResult, setDisplayedGenerationResult] = useState<Proof>();
-
-  useEffect(() => {
-    setDisplayedGenerationResult(result);
-  }, [result]);
 
   const handleWrite = async () => {
     try {
       const proofProm = generateProof();
       withNotifications(proofProm);
       const res = await proofProm;
+      // TODO: below does not refresh the UI
       setDisplayedGenerationResult(res);
     } catch (e: any) {
       notification.error(e.message);

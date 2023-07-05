@@ -32,7 +32,7 @@ async function exportAsJson() {
       data[name] = await compile({});
     }
   } catch (err) {
-    console.error("Error while compiling:", (err as Error).stack);
+    console.error("Error while compiling:", err);
   }
   writeFileSync(path.resolve(TARGET_FILE), JSON.stringify(data, null, 2));
 }

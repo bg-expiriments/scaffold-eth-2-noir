@@ -1,4 +1,4 @@
-import { Proof } from "~~/hooks/noir/useProofGenerator";
+import { Proof } from "~~/interfaces";
 
 export const ProofResult = ({ proof }: { proof: Proof | undefined }) => {
   return (

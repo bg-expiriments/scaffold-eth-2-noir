@@ -1,48 +1,32 @@
 import { CircuitName } from "~~/utils/noir/circuit";
 
-// TODO: where should this live?
-export type Proof = string;
+const generateProof = async (circuitName: CircuitName, parsedArgs?: any) => {
+  return fetch(`/api/proofs`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ circuitName, parsedArgs }),
+  });
+};
 
-let isRunning = false;
-const circuitProofs: Partial<
-  Record<
-    CircuitName,
-    {
-      resultPromise: Promise<Proof>;
-      result: Proof;
-    }
-  >
-> = {};
-
-const generateProofWrapper = (circuitName: CircuitName, parsedArgs?: any) => {
-  console.log("generateProofWrapper", circuitName, parsedArgs);
+const generateProofWrapper = (circuitName: CircuitName, form: Record<string, any>) => {
   return async () => {
-    if (isRunning) throw new Error("A proof generation already in progress");
-    isRunning = true;
-    const proofPromise = new Promise<Proof>(resolve => {
-      setTimeout(() => {
-        isRunning = false;
-        const res = "I am a proof result for " + circuitName;
-        circuitProofs[circuitName]!.result = res;
-        console.log("proofPromise resolving");
-        resolve(res);
-      }, 2000);
-    });
-    circuitProofs[circuitName]!.resultPromise = proofPromise;
-    return proofPromise;
+    const res = await generateProof(circuitName, parseForm(form));
+    return res.json();
   };
 };
 
-export default function useProofGenerator(circuitName: CircuitName, form: any) {
-  if (!circuitProofs[circuitName]) {
-    circuitProofs[circuitName] = {
-      resultPromise: new Promise(r => r("hej")),
-      result: "",
-    };
+const parseForm = (form: Record<string, any>) => {
+  const parameterObj: Record<string, any> = {};
+  for (const [key, value] of Object.entries(form)) {
+    const [, k] = key.split("_");
+    parameterObj[k] = JSON.parse(value);
   }
+  return parameterObj;
+};
+
+export default function useProofGenerator(circuitName: CircuitName, form: Record<string, any>) {
   return {
-    result: circuitProofs[circuitName]!.result,
-    isLoading: isRunning,
+    isLoading: false,
     generateProof: generateProofWrapper(circuitName, form),
   };
 }
