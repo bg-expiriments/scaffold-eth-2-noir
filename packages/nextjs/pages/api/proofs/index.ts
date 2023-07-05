@@ -1,86 +1,99 @@
-import {NextApiRequest, NextApiResponse} from "next";
-// import initialiseAztecBackend from "@noir-lang/aztec_backend";
-// import { create_proof, setup_generic_prover_and_verifier } from "@noir-lang/barretenberg";
-// import { initialiseResolver } from "@noir-lang/noir-source-resolver";
-// import initNoirWasm, { acir_read_bytes, compile } from "@noir-lang/noir_wasm";
-// import { CircuitName, circuits } from "~~/utils/noir/circuit";
-//
-// // TODO: where should this live?
-// export type Proof = string;
-//
-// let isInitialised = false;
-// let isRunning = false;
-// const circuitProofs: Partial<
-//   Record<
-//     CircuitName,
-//     {
-//       resultPromise: Promise<Proof>;
-//       result: Proof;
-//     }
-//   >
-// > = {};
-//
-// const generateProof = async (circuitName: CircuitName, parsedArgs?: any) => {
-//   if (!isInitialised) {
-//     await initNoirWasm();
-//     initialiseResolver(fileResolverCallback);
-//     isInitialised = true;
-//   }
-//   const rez = await compile({});
-//   console.log("🤓 rez: ", new Uint8Array(Buffer.from(rez.circuit, "hex")));
-//   await initialiseAztecBackend();
-//   const acir_ints = new Uint8Array(circuits[circuitName].circuit);
-//   // ERROR: reading bytes fail
-//   const acir = acir_read_bytes(acir_ints);
-//   const [prover] = await setup_generic_prover_and_verifier(acir);
-//   const proof = await create_proof(prover, acir, parsedArgs);
-//   return JSON.stringify(proof, null, 2);
-// };
-//
-// const generateProofWrapper = (circuitName: CircuitName, form: Record<string, any>) => {
-//   return async () => {
-//     if (isRunning) throw new Error("A proof generation already in progress");
-//     isRunning = true;
-//     const proofPromise = generateProof(circuitName, parseForm(form))
-//       .then(res => {
-//         isRunning = false;
-//         circuitProofs[circuitName]!.result = res;
-//         return "done with length: " + res.length;
-//       })
-//       .catch(err => {
-//         console.log("🤓 err: ", err);
-//         isRunning = false;
-//         throw err;
-//       });
-//     circuitProofs[circuitName]!.resultPromise = proofPromise;
-//     return proofPromise;
-//   };
-// };
-//
-// const parseForm = (form: Record<string, any>) => {
-//   const parameterObj: Record<string, any> = {};
-//   for (const [key, value] of Object.entries(form)) {
-//     const [, k] = key.split("_");
-//     parameterObj[k] = JSON.parse(value);
-//   }
-//   return parameterObj;
-// };
-//
-// export default function useProofGenerator(circuitName: CircuitName, form: Record<string, any>) {
-//   if (circuitProofs[circuitName] === undefined) {
-//     circuitProofs[circuitName] = {
-//       resultPromise: new Promise(r => r("hej")),
-//       result: "",
-//     };
-//   }
-//   return {
-//     result: circuitProofs[circuitName]!.result,
-//     isLoading: isRunning,
-//     generateProof: generateProofWrapper(circuitName, form),
-//   };
-// }
+import { spawn } from "child_process";
+import { readFile, writeFile } from "fs/promises";
+import { NextApiRequest, NextApiResponse } from "next";
+import path from "path";
+import { CircuitName } from "~~/utils/noir/circuit";
+
+let isRunning = false;
+
+async function spawnChild(name: string, args?: any, options?: any) {
+  const child = spawn(name, args, options);
+
+  let data = "";
+  for await (const chunk of child.stdout) {
+    console.log("stdout chunk: " + chunk);
+    data += chunk;
+  }
+  let error = "";
+  for await (const chunk of child.stderr) {
+    console.error("stderr chunk: " + chunk);
+    error += chunk;
+  }
+  const exitCode = await new Promise(resolve => {
+    child.on("close", resolve);
+  });
+
+  if (exitCode) {
+    throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+  }
+  return data;
+}
+
+const getProverToml = (parsedArgs: any) => {
+  let toml = "";
+  for (const [key, value] of Object.entries(parsedArgs)) {
+    toml += `${key} = ${JSON.stringify(value)}\n`;
+  }
+  return toml;
+};
+
+async function logProof(proof: string) {
+  console.log("✅ here is the proof in byte32, ready to paste into the UI...\n0x" + proof);
+}
+
+async function logPublicInputs(circuitName: CircuitName) {
+  const p = path.join(__dirname, `../../../../../noir/circuits/${circuitName}/Verifier.toml`);
+  const verifierToml = await readFile(p, "utf-8");
+  const publicInputs = [];
+  for (const line of verifierToml.split("\n")) {
+    const input = line.split(" = ")[1];
+    if (input) {
+      publicInputs.push(JSON.parse(input));
+    }
+  }
+  console.log("🔍 here is the publicInputs, ready to paste into the UI...\n" + JSON.stringify(publicInputs));
+}
+
+async function generateProof(circuitName: CircuitName, parsedArgs?: any) {
+  const cwd = path.join(__dirname, `../../../../../noir/circuits/${circuitName}`);
+  const p = path.join(cwd, "Prover.toml");
+  console.log("📝 writing to: ", p);
+  await writeFile(p, getProverToml(parsedArgs));
+  console.log("🧠 generating proof...");
+  const res = await spawnChild("nargo", ["prove"], {
+    cwd,
+  });
+  logProof(res);
+  logPublicInputs(circuitName);
+}
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("🤓 req: ", req.body);
-  res.status(200).json({ name: "John Doe" });
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
+  if (req.body.circuitName === undefined) {
+    res.status(400).json({ error: "Missing circuitName" });
+    return;
+  }
+  if (req.body.parsedArgs === undefined) {
+    res.status(400).json({ error: "Missing parsedArgs" });
+    return;
+  }
+  if (isRunning) {
+    res.status(400).json({ error: "A proof generation already in progress" });
+    return;
+  }
+  isRunning = true;
+
+  const { circuitName, parsedArgs } = req.body;
+  generateProof(circuitName, parsedArgs)
+    .then(() => {
+      isRunning = false;
+    })
+    .catch(err => {
+      isRunning = false;
+      console.error("❌ Error generating proof: ", err);
+    });
+  res.status(200).json("Proof generation started, reult will be logged to server console");
 }
