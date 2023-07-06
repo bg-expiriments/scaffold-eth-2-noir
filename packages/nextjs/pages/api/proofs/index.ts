@@ -95,5 +95,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       isRunning = false;
       console.error("❌ Error generating proof: ", err);
     });
-  res.status(200).json("Proof generation started, reult will be logged to server console");
+  res.status(200).json("Proof generation started, result will be logged to server console");
 }

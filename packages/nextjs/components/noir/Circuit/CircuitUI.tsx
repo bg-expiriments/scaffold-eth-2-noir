@@ -55,7 +55,8 @@ export const CircuitUI = ({ circuitName, className = "" }: CircuitUIProps) => {
                 </div>
               </div>
               <div className="p-5 divide-y divide-base-300">
-                <p>TODO...</p>
+                <p>Verification is currently only done on-chain.</p>
+                {/* TODO */}
               </div>
             </div>
           </div>
