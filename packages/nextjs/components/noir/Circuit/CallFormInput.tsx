@@ -16,18 +16,23 @@ export const CallFormInput = ({ setForm, form, stateObjectKey, param }: CallForm
   const inputProps = {
     name: stateObjectKey,
     value: form[stateObjectKey],
-    placeholder: `${param.visibility}\t${param.type.kind}\t${param.name}`,
+    placeholder: `${param.visibility} ${param.type.kind} ${param.name}`,
     onChange: (value: any) => {
       setForm(form => ({ ...form, [stateObjectKey]: value }));
     },
   };
 
   if (param.type.kind === "string") {
-    return <InputBase {...inputProps} />;
+    // TODO
   } else if (param.type.kind === "field") {
-    // TODO...
+    // TODO
+  } else if (param.type.kind === "integer") {
+    // TODO
+  } else if (param.type.kind === "array") {
+    // TODO
   } else {
     console.error("Unsupported param type:", param.type.kind);
+    console.log(JSON.stringify(param.type, null, 2));
   }
 
   return <InputBase {...inputProps} />;

@@ -19,8 +19,9 @@ const ExampleUI: NextPage = () => {
         <div className="flex flex-col justify-center items-center"></div>
       </div>
       <div className="grid lg:grid-cols-3 flex-grow" data-theme="exampleUi">
-        <BirthDateSignature />
-        <GenerateProof />
+        <BirthDateSignature aliceDefaultAge={YEAR_TEN_YEARS_AGO + 1} />
+        <GenerateProof requiredBirthYear={YEAR_TEN_YEARS_AGO} />
+
         <AgeRestrictedContractExecutor />
       </div>
     </>

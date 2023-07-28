@@ -1,6 +1,6 @@
 import { CircuitName } from "~~/utils/noir/circuit";
 
-const generateProof = async (circuitName: CircuitName, parsedArgs?: any) => {
+export const generateProof = async (circuitName: CircuitName, parsedArgs?: any) => {
   return fetch(`/api/proofs`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

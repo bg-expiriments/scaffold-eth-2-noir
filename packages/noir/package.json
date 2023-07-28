@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "circuit-new": "nargo new circuits/$@",
-    "circuit-test": "cd $@; nargo test",
+    "circuit-test": "cd $@; nargo test --show-output",
     "circuit-generate-solidity-verifier": "cd $@; nargo codegen-verifier",
     "export-solidity": "./scripts/export_sol_verifiers.sh",
     "export-json": "ts-node scripts/export_circuits_src.ts",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@noir-lang/noir-source-resolver": "1.1.1",
-    "@noir-lang/noir_wasm": "0.6.0-77fba56",
+    "@noir-lang/noir_wasm": "0.6.0-181813",
     "dotenv": "^16.0.3",
     "envfile": "^6.18.0"
   },

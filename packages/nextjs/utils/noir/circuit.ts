@@ -1,10 +1,24 @@
 import circuitData from "~~/generated/circuits.json";
 
+type KindInteger = {
+  kind: "integer";
+  sign: "signed" | "unsigned";
+  width: number;
+};
+type KindField = {
+  kind: "field";
+};
+type KindArray = {
+  kind: "array";
+  length: number;
+  type: ABI_ParameterType;
+};
+
+type ABI_ParameterType = KindInteger | KindArray | KindField;
+
 type ABI_Parameter = {
   name: string;
-  type: {
-    kind: string;
-  };
+  type: ABI_ParameterType;
   visibility: "public" | "private";
 };
 type ABI_ParamWitnesses = any;
@@ -50,3 +64,5 @@ export enum CircuitCodeStatus {
   "FOUND",
   "NOT_FOUND",
 }
+
+//export function convertParamInputType (input:string, )

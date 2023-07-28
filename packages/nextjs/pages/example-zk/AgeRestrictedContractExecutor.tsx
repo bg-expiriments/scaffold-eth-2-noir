@@ -1,13 +1,32 @@
+import { useState } from "react";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+
+type TProof = `0x${string}`;
+
 export const AgeRestrictedContractExecutor = () => {
+  const [proof, setProof] = useState<TProof>("0x");
+
+  const { writeAsync, isLoading } = useScaffoldContractWrite({
+    contractName: "BalloonVendor",
+    functionName: "redeemFreeTokens",
+    args: [proof],
+    onBlockConfirmation: txnReceipt => {
+      console.log("📦 Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
         <p>Call age restricted contract with proof here. Copy/paste from prev window.</p>
-        <input type="text" placeholder="proof-of-required-birthyear" />
-        <input type="number" placeholder="required birth-year (that was used to generate proof)" />
-        <input type="text" placeholder="proof-of-birthyear-signature" />
-        <input type="text" placeholder="balloon color" />
-        <button className="border-2 border-black">Call age restricted contract with proof</button>
+        <input
+          type="text"
+          placeholder="proof-of-required-birthyear"
+          onChange={e => setProof(e.target.value as TProof)}
+        />
+        <button className="border-2 border-black" onClick={() => writeAsync()} disabled={isLoading}>
+          Call age restricted contract with proof
+        </button>
       </div>
     </>
   );

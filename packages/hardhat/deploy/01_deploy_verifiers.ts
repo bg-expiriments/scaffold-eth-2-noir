@@ -2,8 +2,6 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { readdir } from "fs/promises";
 
-const contractTags: string[] = [];
-
 /**
  * Deploys a contract named "YourContract" using the deployer account and
  * constructor arguments set to the deployer address
@@ -37,7 +35,6 @@ const deployVerifiers: DeployFunction = async function (hre: HardhatRuntimeEnvir
       // automatically mining the contract deployment transaction. There is no effect on live networks.
       autoMine: true,
     });
-    contractTags.push(name);
   }
 
   // Get the deployed contract
@@ -48,4 +45,4 @@ export default deployVerifiers;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployVerifiers.tags = ["Verifiers", ...contractTags];
+deployVerifiers.tags = ["Verifiers"];

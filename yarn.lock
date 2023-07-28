@@ -2948,12 +2948,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noir-lang/noir_wasm@npm:0.6.0-77fba56":
-  version: 0.6.0-77fba56
-  resolution: "@noir-lang/noir_wasm@npm:0.6.0-77fba56"
+"@noir-lang/noir_wasm@npm:0.6.0-181813":
+  version: 0.6.0-181813
+  resolution: "@noir-lang/noir_wasm@npm:0.6.0-181813"
   peerDependencies:
     "@noir-lang/noir-source-resolver": 1.1.2
-  checksum: 79aba93cc519ed93b79f3d13c2bae9383d9d7eaf5f20351a50ffa2ad341cc2311942c5f03cc8774f27c797a05d6dd37481a2b9748f776dd0945631c1ae3996b1
+  checksum: c764d3c211dd4f80a08a0ee3d715934fb3f27cc60191220ec0722853b3c790569d7a9a18e90fbec0174a307963f616913fce030f5ee2a1b175a9fc09c29996dd
   languageName: node
   linkType: hard
 
@@ -3614,6 +3614,7 @@ __metadata:
     hardhat-gas-reporter: ^1.0.9
     prettier: ^2.8.4
     qrcode: ^1.5.1
+    secp256k1: ^5.0.0
     solidity-coverage: ^0.8.2
     ts-node: ^10.9.1
     typechain: ^8.1.0
@@ -3634,6 +3635,7 @@ __metadata:
     "@types/react": ^18.0.9
     "@types/react-blockies": ^1.4.1
     "@types/react-copy-to-clipboard": ^5.0.4
+    "@types/secp256k1": ^4.0.3
     "@typescript-eslint/eslint-plugin": ^5.39.0
     "@uniswap/sdk": ^3.0.3
     autoprefixer: ^10.4.12
@@ -3653,6 +3655,7 @@ __metadata:
     react-dom: ^18.2.0
     react-fast-marquee: ^1.3.5
     react-hot-toast: ^2.4.0
+    secp256k1: ^5.0.0
     swr: ^2.2.0
     tailwindcss: ^3.1.8
     typescript: ^4.9.5
@@ -3669,7 +3672,7 @@ __metadata:
   resolution: "@se-2/noir@workspace:packages/noir"
   dependencies:
     "@noir-lang/noir-source-resolver": 1.1.1
-    "@noir-lang/noir_wasm": 0.6.0-77fba56
+    "@noir-lang/noir_wasm": 0.6.0-181813
     "@types/chai": ^4.3.5
     "@types/eslint": ^8
     "@types/mocha": ^9.1.1
@@ -4545,7 +4548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/secp256k1@npm:^4.0.1":
+"@types/secp256k1@npm:^4.0.1, @types/secp256k1@npm:^4.0.3":
   version: 4.0.3
   resolution: "@types/secp256k1@npm:4.0.3"
   dependencies:
@@ -13719,6 +13722,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^5.0.0":
+  version: 5.1.0
+  resolution: "node-addon-api@npm:5.1.0"
+  dependencies:
+    node-gyp: latest
+  checksum: 2508bd2d2981945406243a7bd31362fc7af8b70b8b4d65f869c61731800058fb818cc2fd36c8eac714ddd0e568cc85becf5e165cebbdf7b5024d5151bbc75ea1
+  languageName: node
+  linkType: hard
+
 "node-emoji@npm:^1.10.0":
   version: 1.11.0
   resolution: "node-emoji@npm:1.11.0"
@@ -16038,6 +16050,18 @@ __metadata:
     node-gyp: latest
     node-gyp-build: ^4.2.0
   checksum: 21e219adc0024fbd75021001358780a3cc6ac21273c3fcaef46943af73969729709b03f1df7c012a0baab0830fb9a06ccc6b42f8d50050c665cb98078eab477b
+  languageName: node
+  linkType: hard
+
+"secp256k1@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "secp256k1@npm:5.0.0"
+  dependencies:
+    elliptic: ^6.5.4
+    node-addon-api: ^5.0.0
+    node-gyp: latest
+    node-gyp-build: ^4.2.0
+  checksum: a0719dff4687c38d385b5e0b7e811c51a4ea24893128be9d097aee99f879eb0ea52582590deb15a49da627a3db23c6b028ad5c9c6ac1fca92ce760153b8cf21c
   languageName: node
   linkType: hard
 
