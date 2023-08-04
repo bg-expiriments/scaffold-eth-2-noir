@@ -14,13 +14,16 @@
     "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true"
   },
   "dependencies": {
+    "@aztec/bb.js": "^0.3.4",
     "@ethersproject/networks": "^5.7.1",
     "@ethersproject/web": "^5.7.1",
     "@heroicons/react": "^2.0.11",
+    "@noir-lang/acvm_js": "git+https://github.com/noir-lang/acvm-simulator-wasm.git#c56eec56f67f90fef90126c5575b85190bdcd1e1",
     "@rainbow-me/rainbowkit": "^0.12.15",
     "@uniswap/sdk": "^3.0.3",
     "daisyui": "^2.31.0",
     "ethers": "^5.0.0",
+    "fflate": "^0.8.0",
     "next": "^13.1.6",
     "nextjs-progressbar": "^0.0.16",
     "react": "^18.2.0",
