@@ -29,9 +29,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aztec/bb.js@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "@aztec/bb.js@npm:0.3.4"
+"@aztec/bb.js@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "@aztec/bb.js@npm:0.3.6"
   dependencies:
     comlink: ^4.4.1
     commander: ^10.0.1
@@ -39,7 +39,7 @@ __metadata:
     idb-keyval: ^6.2.1
   bin:
     bb.js: dest/main.js
-  checksum: a1feb795fc852a26d79cedf16180ab355bdaaa7dddee2f351b95f6c0862b29a517ca0daa7bd9190562b7515a3c91312a07fde5f90db1d424f18f968133695f4d
+  checksum: 49fff5414885025be8cefa1b52ac52265275f2a9121d389b8f6641088a5e4a9c44b25e754c5ff6616e1ccbb0ccfefec4a64a5862903d38fb3f3968a1e608532d
   languageName: node
   linkType: hard
 
@@ -3631,7 +3631,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
-    "@aztec/bb.js": ^0.3.4
+    "@aztec/bb.js": ^0.3.6
     "@ethersproject/networks": ^5.7.1
     "@ethersproject/web": ^5.7.1
     "@heroicons/react": ^2.0.11

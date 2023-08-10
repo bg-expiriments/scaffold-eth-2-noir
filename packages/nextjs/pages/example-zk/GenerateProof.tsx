@@ -53,8 +53,12 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
   const [proof, setProof] = useState<string>(() => "");
   const handleSubmission = async () => {
     const parsedForm = parseForm(form);
-    const { proof } = await generateProof("LessThenSignedAge", parsedForm as ParsedArgs);
-    setProof(proof);
+    try {
+      const { proof } = await generateProof("LessThenSignedAge", parsedForm as ParsedArgs);
+      setProof(proof);
+    } catch (e) {
+      console.error(e.stack);
+    }
   };
   return (
     <>

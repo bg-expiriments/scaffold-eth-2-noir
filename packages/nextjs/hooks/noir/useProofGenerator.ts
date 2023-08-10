@@ -36,6 +36,7 @@ function getPublicInputsLength(parameters: CircuitAbiParameters) {
 export const generateProof = async (circuitName: CircuitName, parsedArgs: ParsedArgs) => {
   isGeneratingProof = true;
   console.log("🧠 start");
+  console.log("parsedArgs", parsedArgs);
   const noir = new NoirBrowser();
   try {
     const circuit = circuits[circuitName];
@@ -46,9 +47,14 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
 
     const publicInputsLength = getPublicInputsLength(circuit.abi.parameters);
 
-    // const publicInputs = proof.slice(0, publicInputsLength);
+    const publicInputs = proof.slice(0, 32 * publicInputsLength);
+
     const slicedProof = proof.slice(32 * publicInputsLength);
+
+    console.log("0x" + Buffer.from(publicInputs).toString("hex"));
     console.log("0x" + Buffer.from(slicedProof).toString("hex"));
+    console.log(publicInputsLength);
+    console.log(Buffer.from(slicedProof).toString("hex").length);
 
     return {
       witness: Buffer.from(witness).toString("hex"),
