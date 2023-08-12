@@ -6,7 +6,7 @@ const TARGET_FILE = "../nextjs/generated/circuits.json";
 const CIRCUITS_FOLDER_PATH = "./circuits";
 
 function getData(project: string) {
-  const path = `${CIRCUITS_FOLDER_PATH}/${project}/target/main.json`;
+  const path = `${CIRCUITS_FOLDER_PATH}/${project}/target/${project}.json`;
   try {
     console.log("🤓 trying to read:", path);
     const code = JSON.parse(readFileSync(path, "utf8") as string);
