@@ -17,7 +17,7 @@ const getInitialFormState = (aliceDefaultAge: number): TForm => ({
   theMayorsSecretKey: MAYORS_PRIVATEKEY,
 });
 
-const signBirthYear = async (form: TForm) => {
+export const signBirthYear = async (form: TForm) => {
   const { personEthereumAddress, birthYear, theMayorsSecretKey } = form;
   const claimHash = ethers.utils.solidityKeccak256(["address", "uint16"], [personEthereumAddress, birthYear]);
 

@@ -34,7 +34,7 @@ const buildNoirIntArray = (hexString: string) => {
     .map(hex => ethers.utils.hexZeroPad(hex, 32));
 };
 
-const parseForm = (form: TForm) => {
+export const parseForm = (form: TForm) => {
   const pub_key_array = buildNoirIntArray(form.proofOfBirthYearPublicKey);
   const issuer_public_key_x = pub_key_array.slice(1, Math.round(pub_key_array.length / 2));
   const issuer_public_key_y = pub_key_array.slice(Math.round(pub_key_array.length / 2));
