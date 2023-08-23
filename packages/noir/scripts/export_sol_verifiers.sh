@@ -1,4 +1,6 @@
-echo "\nexporting sol verifiers..."
+#!/bin/bash
+
+echo "exporting sol verifiers..."
 rm ../hardhat/contracts/verifiers/*
 for d in circuits/*/ ; do
   echo $d
