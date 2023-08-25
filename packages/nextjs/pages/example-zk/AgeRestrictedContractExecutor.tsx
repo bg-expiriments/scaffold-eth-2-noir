@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
-
-type TProof = `0x${string}`;
+import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
 
 export const AgeRestrictedContractExecutor = () => {
-  const [proof, setProof] = useState<TProof>("0x");
+  const proof = useBirthYearProofsStore(state => state.proof);
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "BalloonVendor",
@@ -17,17 +15,23 @@ export const AgeRestrictedContractExecutor = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <p>Call age restricted contract with proof here. Copy/paste from prev window.</p>
-        <input
-          type="text"
-          placeholder="proof-of-required-birthyear"
-          value={proof}
-          onChange={e => setProof(e.target.value as TProof)}
-        />
-        <button className="border-2 border-black" onClick={() => writeAsync()} disabled={isLoading}>
-          Call age restricted contract with proof
-        </button>
+      <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div className="card-body">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Your proof of having the required birth year</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Proof of required birthyear"
+              value={proof}
+              className="input input-bordered"
+            />
+          </div>
+          <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
+            Call age restricted contract with proof
+          </button>
+        </div>
       </div>
     </>
   );
