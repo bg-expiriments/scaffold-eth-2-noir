@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import secp256k1 from "secp256k1";
 import { AddressInput } from "~~/components/scaffold-eth/Input/AddressInput";
+import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
 
 const MAYORS_PRIVATEKEY = "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d";
 
@@ -34,8 +35,9 @@ export const signBirthYear = async (form: TForm) => {
 
 export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: number }) => {
   const [form, setForm] = useState<TForm>(() => getInitialFormState(aliceDefaultAge));
-  const [signedBirthYear, setSignedBirthYear] = useState<string>("");
-  const [signerPublicKey, setSignerPublicKey] = useState<string>("");
+  const setSignedBirthYear = useBirthYearProofsStore(state => state.setSignedBirthYear);
+  const setSignerPublicKey = useBirthYearProofsStore(state => state.setSignerPublicKey);
+
   const handleSubmission = async () => {
     const { signedMessage, signerPublicKey } = await signBirthYear(form);
     setSignedBirthYear(signedMessage);
@@ -44,38 +46,52 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center bg-red-50">
-        <p>This is as the role of the authority in town.</p>
-        <p>Generate proof-of-birthyear-signature here.</p>
-        <AddressInput
-          value={form.personEthereumAddress}
-          name="personEthereumAddress"
-          placeholder="Ethereum address of person to sign for"
-          onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
-        />
-        <input
-          type="number"
-          placeholder="birth-year"
-          value={form.birthYear}
-          onChange={e => setForm({ ...form, birthYear: e.target.value as unknown as number })}
-        />
-        <input
-          type="text"
-          placeholder="super-secret-key-for-signing"
-          value={form.theMayorsSecretKey}
-          onChange={e => setForm({ ...form, theMayorsSecretKey: e.target.value })}
-        />
-        <button className="border-2 border-black" onClick={handleSubmission}>
-          Generate proof-of-birthyear-signature
-        </button>
-        {signedBirthYear && signerPublicKey && (
-          <div className="h-200 w-80 bg-green-50">
-            <p>proof-of-birthyear-signature</p>
-            <p className="break-words">{signedBirthYear}</p>
-            <p>proof-of-birthyear-publickey</p>
-            <p className="break-words">{signerPublicKey}</p>
+      <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div className="card-body">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Enter your Ethereum address</span>
+            </label>
+            <AddressInput
+              value={form.personEthereumAddress}
+              name="personEthereumAddress"
+              placeholder="Ethereum address"
+              onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
+            />
           </div>
-        )}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Enter your birth year</span>
+            </label>
+            <input
+              type="number"
+              placeholder="Birth year"
+              className="input input-bordered"
+              value={form.birthYear}
+              onChange={e => setForm({ ...form, birthYear: Number(e.target.value) })}
+            />
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Super secret key for signing</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Super secret key"
+              value={form.theMayorsSecretKey}
+              className="input input-bordered"
+              onChange={e => setForm({ ...form, theMayorsSecretKey: e.target.value })}
+            />
+            <label className="label">
+              <p className="label-text-alt mt-0">MAYORS_PRIVATEKEY EXPLANATION</p>
+            </label>
+          </div>
+          <div className="form-control">
+            <button className="btn btn-primary" onClick={handleSubmission}>
+              Generate proof
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

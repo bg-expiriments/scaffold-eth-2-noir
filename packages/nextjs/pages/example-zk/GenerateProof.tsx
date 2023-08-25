@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import { AddressInput } from "~~/components/scaffold-eth/Input/AddressInput";
 import { ParsedArgs, generateProof } from "~~/hooks/noir/useProofGenerator";
+import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
 
 type TForm = {
   birthYear: number;
@@ -11,11 +12,19 @@ type TForm = {
   personEthereumAddress: string;
 };
 
-const getInitialFormState = (requiredBirthYear: number): TForm => ({
+const getInitialFormState = ({
+  requiredBirthYear,
+  signedBirthYear,
+  signerPublicKey,
+}: {
+  requiredBirthYear: number;
+  signedBirthYear: string;
+  signerPublicKey: string;
+}): TForm => ({
   birthYear: requiredBirthYear + 1,
   requiredBirthYear,
-  proofOfBirthYearSignedMessage: "",
-  proofOfBirthYearPublicKey: "",
+  proofOfBirthYearSignedMessage: signedBirthYear || "",
+  proofOfBirthYearPublicKey: signerPublicKey || "",
   personEthereumAddress: "",
 });
 
@@ -49,8 +58,13 @@ export const parseForm = (form: TForm) => {
 };
 
 export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number }) => {
-  const [form, setForm] = useState<TForm>(() => getInitialFormState(requiredBirthYear));
-  const [proof, setProof] = useState<string>(() => "");
+  const setProof = useBirthYearProofsStore(state => state.setProof);
+  const signedBirthYear = useBirthYearProofsStore(state => state.signedBirthYear);
+  const signerPublicKey = useBirthYearProofsStore(state => state.signerPublicKey);
+  const [form, setForm] = useState<TForm>(() =>
+    getInitialFormState({ requiredBirthYear, signedBirthYear, signerPublicKey }),
+  );
+
   const handleSubmission = async () => {
     const parsedForm = parseForm(form);
     try {
@@ -62,47 +76,77 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
   };
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <p>Generate proof-of-required-birthyear here. Copy/paste from prev window.</p>
-        <input
-          type="number"
-          placeholder="birth-year"
-          value={form.birthYear}
-          onChange={e => setForm({ ...form, birthYear: e.target.value as unknown as number })}
-        />
-        <input
-          type="number"
-          placeholder="required-birth-year"
-          value={form.requiredBirthYear}
-          onChange={e => setForm({ ...form, requiredBirthYear: e.target.value as unknown as number })}
-        />
-        <input
-          type="text"
-          placeholder="proof-of-birth-year-signed-message"
-          value={form.proofOfBirthYearSignedMessage}
-          onChange={e => setForm({ ...form, proofOfBirthYearSignedMessage: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="proof-of-birth-year-public-key"
-          value={form.proofOfBirthYearPublicKey}
-          onChange={e => setForm({ ...form, proofOfBirthYearPublicKey: e.target.value })}
-        />
-        <AddressInput
-          value={form.personEthereumAddress}
-          name="personEthereumAddress"
-          placeholder="Ethereum address of person in signed message"
-          onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
-        />
-        <button className="border-2 border-black" onClick={handleSubmission}>
-          Generate proof-of-required-birthyear
-        </button>
-        {proof && (
-          <div className="h-200 w-96 bg-green-50">
-            <p>Proof-of-required-birthyear:</p>
-            <p className="break-words">{proof}</p>
+      <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div className="card-body">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-8">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Enter your birth year</span>
+              </label>
+              <input
+                type="number"
+                placeholder="Birth year"
+                className="input input-bordered"
+                value={form.birthYear}
+                onChange={e => setForm({ ...form, birthYear: e.target.value as unknown as number })}
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Enter your required birth year</span>
+              </label>
+              <input
+                type="number"
+                placeholder="Required birth year"
+                className="input input-bordered"
+                value={form.requiredBirthYear}
+                onChange={e => setForm({ ...form, requiredBirthYear: e.target.value as unknown as number })}
+              />
+            </div>
           </div>
-        )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-8">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Super secret key for signing</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Proof of birth year signed"
+                className="input input-bordered"
+                value={form.proofOfBirthYearSignedMessage}
+                onChange={e => setForm({ ...form, proofOfBirthYearSignedMessage: e.target.value })}
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Proof public key</span>
+              </label>
+              <input
+                type="text"
+                placeholder="proof-of-birth-year-public-key"
+                className="input input-bordered"
+                value={form.proofOfBirthYearPublicKey}
+                onChange={e => setForm({ ...form, proofOfBirthYearPublicKey: e.target.value })}
+              />
+            </div>
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Ethereum address of person in signed message</span>
+            </label>
+            <AddressInput
+              value={form.personEthereumAddress}
+              name="personEthereumAddress"
+              placeholder="Ethereum address of person in signed message"
+              onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
+            />
+          </div>
+          <div className="form-control mt-6">
+            <button className="btn btn-primary" onClick={handleSubmission}>
+              Generate proof
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
