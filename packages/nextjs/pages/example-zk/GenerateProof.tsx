@@ -56,12 +56,8 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
     try {
       const { proof } = await generateProof("LessThenSignedAge", parsedForm as ParsedArgs);
       setProof(proof);
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error(e.stack);
-      } else {
-        console.error(`Unknown error: ${e}`);
-      }
+    } catch (e: any) {
+      console.error(e.stack);
     }
   };
   return (

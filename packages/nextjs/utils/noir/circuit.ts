@@ -1,5 +1,7 @@
 import circuitData from "~~/generated/circuits.json";
 
+// TODO: the types here needs some work to work in a more general context.
+
 type KindInteger = {
   kind: "integer";
   sign: "signed" | "unsigned";
