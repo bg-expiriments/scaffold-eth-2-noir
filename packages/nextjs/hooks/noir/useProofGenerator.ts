@@ -60,25 +60,16 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
   }
 };
 
-const generateProofWrapper = (circuitName: CircuitName, form: Record<string, any>) => {
-  return async () => {
-    const res = await generateProof(circuitName, parseForm(form));
+const generateProofWrapper = (circuitName: CircuitName) => {
+  return async (form: Record<string, any>) => {
+    const res = await generateProof(circuitName, form);
     return res;
   };
 };
 
-const parseForm = (form: Record<string, any>) => {
-  const parameterObj: ParsedArgs = {};
-  for (const [key, value] of Object.entries(form)) {
-    const [, k] = key.split("_");
-    parameterObj[k] = JSON.parse(value);
-  }
-  return parameterObj;
-};
-
-export default function useProofGenerator(circuitName: CircuitName, form: Record<string, any>) {
+export default function useProofGenerator(circuitName: CircuitName) {
   return {
     isLoading: isGeneratingProof,
-    generateProof: generateProofWrapper(circuitName, form),
+    generateProof: generateProofWrapper(circuitName),
   };
 }

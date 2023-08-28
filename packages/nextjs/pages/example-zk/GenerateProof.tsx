@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { AddressInput } from "~~/components/scaffold-eth/Input/AddressInput";
 import { ParsedArgs, generateProof } from "~~/hooks/noir/useProofGenerator";
 import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
+import { notification } from "~~/utils/scaffold-eth";
 
 type TForm = {
   birthYear: number;
@@ -64,14 +65,22 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
   const [form, setForm] = useState<TForm>(() =>
     getInitialFormState({ requiredBirthYear, signedBirthYear, signerPublicKey }),
   );
+  const [isProofRunning, setIsProofRunning] = useState(false);
 
   const handleSubmission = async () => {
-    const parsedForm = parseForm(form);
+    setIsProofRunning(true);
+    const notifcationId = notification.loading("Generating proof...");
     try {
+      const parsedForm = parseForm(form);
       const { proof } = await generateProof("LessThenSignedAge", parsedForm as ParsedArgs);
       setProof(`0x${proof}`);
+      notification.success("Proof generated");
     } catch (e: any) {
       console.error(e.stack);
+      notification.error("Proof generation failed");
+    } finally {
+      notification.remove(notifcationId);
+      setIsProofRunning(false);
     }
   };
 
@@ -155,7 +164,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
             />
           </div>
           <div className="form-control mt-6">
-            <button className="btn btn-primary" onClick={handleSubmission}>
+            <button className="btn btn-primary" onClick={handleSubmission} disabled={isProofRunning}>
               Generate proof ✅
             </button>
           </div>
