@@ -129,7 +129,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-8">
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Super secret key for signing</span>
+                <span className="label-text">Signed message</span>
               </label>
               <input
                 type="text"
@@ -141,7 +141,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Proof public key</span>
+                <span className="label-text">Signers public key</span>
               </label>
               <input
                 type="text"

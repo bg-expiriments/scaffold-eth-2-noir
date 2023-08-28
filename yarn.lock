@@ -29,7 +29,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aztec/bb.js@npm:^0.3.6":
+"@aztec/bb.js@npm:0.3.6":
   version: 0.3.6
   resolution: "@aztec/bb.js@npm:0.3.6"
   dependencies:
@@ -3631,7 +3631,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
-    "@aztec/bb.js": ^0.3.6
+    "@aztec/bb.js": 0.3.6
     "@ethersproject/networks": ^5.7.1
     "@ethersproject/web": ^5.7.1
     "@heroicons/react": ^2.0.11

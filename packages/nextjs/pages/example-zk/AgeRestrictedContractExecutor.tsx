@@ -18,10 +18,10 @@ export const AgeRestrictedContractExecutor = () => {
       <p className="py-6">
         {" "}
         The ballon store is using the same `TokenVendor.sol` as the [speed run Ethereum
-        challange](https://speedrunethereum.com/challenge/token-vendor), with some additions. They've added a function
-        `redeemFreeToken`, with the `onlyKids`-modifier. The modifier constructs the public inputs and calls the
-        proof-verifier (`packages/hardhat/contracts/verifiers/LessThenSignedAge.sol`). The public inputs is part of the
-        information that was used to generate the proof. They are needed to show what we are actually proving.
+        challange](https://speedrunethereum.com/challenge/token-vendor), with some additions. They&apos;ve added a
+        function `redeemFreeToken`, with the `onlyKids`-modifier. The modifier constructs the public inputs and calls
+        the proof-verifier (`packages/hardhat/contracts/verifiers/LessThenSignedAge.sol`). The public inputs is part of
+        the information that was used to generate the proof. They are needed to show what we are actually proving.
         <br />
         Now Alice gets a balloon🎈 _token_, that she can redeem at the store to get an actual ballloon.
         <br />
@@ -37,6 +37,10 @@ export const AgeRestrictedContractExecutor = () => {
               placeholder="Proof of required birthyear"
               value={proof}
               className="input input-bordered"
+              onChange={e => {
+                console.log(e.target.value);
+                useBirthYearProofsStore.setState({ proof: e.target.value as `0x${string}` });
+              }}
             />
           </div>
           <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>

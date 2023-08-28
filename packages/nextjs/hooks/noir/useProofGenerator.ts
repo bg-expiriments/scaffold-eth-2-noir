@@ -46,9 +46,17 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
     const formattedArgs = formatArgs(circuit.abi.param_witnesses, parsedArgs);
     const witness: Uint8Array = await noir.generateWitness(formattedArgs);
     const proof: Uint8Array = await noir.generateProof(witness);
+    console.log(JSON.stringify(parsedArgs, null, 2));
+
+    console.log("===================");
 
     const publicInputsLength = getPublicInputsLength(circuit.abi.parameters);
+    const publicInputs = proof.slice(0, 32 * publicInputsLength);
     const slicedProof = proof.slice(32 * publicInputsLength);
+    const pub = Buffer.from(publicInputs).toString("hex");
+    for (let i = 0; i < pub.length; i = i + 64) {
+      console.log(pub.slice(i, i + 64));
+    }
 
     return {
       witness: Buffer.from(witness).toString("hex"),
