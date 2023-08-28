@@ -52,7 +52,7 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
 
     return {
       witness: Buffer.from(witness).toString("hex"),
-      proof: "0x" + Buffer.from(slicedProof).toString("hex"),
+      proof: Buffer.from(slicedProof).toString("hex"),
     };
   } finally {
     isGeneratingProof = false;
