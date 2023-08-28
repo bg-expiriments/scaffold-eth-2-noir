@@ -77,6 +77,18 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
 
   return (
     <>
+      <p className="py-6">
+        {" "}
+        One of the reasons that Alice knows that she is not sharing her birth year with anyone is that the proof
+        generation is open source, and she herself can double check the code. Furthermore she can even generate the
+        proof✅ herself locally. This is actually what we are doing in this implementation.
+        <br />
+        TTODOTODOTODOTODOTODOTODOTODOTODOTODOODO! In `packages/nextjs/utils/noir/noirBrowser.ts` you can see that we are
+        importing from `@aztec/bb.js` and `@noir-lang/acvm_js`, but we could also generate this proof with `nargo
+        prove`. We are also using the predefined circuit-ABI byte code from `packages/nextjs/generated/circuits.json`,
+        but we could re-compile it using `nargo compile`.
+        <br />
+      </p>
       <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
         <div className="card-body">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-8">
@@ -144,7 +156,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
           </div>
           <div className="form-control mt-6">
             <button className="btn btn-primary" onClick={handleSubmission}>
-              Generate proof
+              Generate proof ✅
             </button>
           </div>
         </div>
