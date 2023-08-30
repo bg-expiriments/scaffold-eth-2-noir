@@ -1,7 +1,0 @@
-[package]
-name = "LessThan"
-type = "bin"
-authors = [""]
-compiler_version = "0.9.0"
-
-[dependencies]
