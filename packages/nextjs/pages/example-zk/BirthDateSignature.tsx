@@ -38,12 +38,20 @@ export const signBirthYear = async (form: TForm) => {
 
 export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: number }) => {
   const [form, setForm] = useState<TForm>(() => getInitialFormState(aliceDefaultAge));
+  const ethereumAddress = useBirthYearProofsStore(state => state.ethereumAddress);
+  const setEthereumAddress = useBirthYearProofsStore(state => state.setEthereumAddress);
+  const birthYear = useBirthYearProofsStore(state => state.birthYear);
+  const setBirthYear = useBirthYearProofsStore(state => state.setBirthYear);
   const setSignedBirthYear = useBirthYearProofsStore(state => state.setSignedBirthYear);
   const setSignerPublicKey = useBirthYearProofsStore(state => state.setSignerPublicKey);
 
   const handleSubmission = async () => {
     try {
-      const { signedMessage, signerPublicKey } = await signBirthYear(form);
+      const { signedMessage, signerPublicKey } = await signBirthYear({
+        ...form,
+        personEthereumAddress: ethereumAddress,
+        birthYear,
+      });
       setSignedBirthYear(signedMessage);
       setSignerPublicKey(signerPublicKey);
       notification.success("Successfully signed birth year");
@@ -84,10 +92,10 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
               <span className="label-text">Enter your Ethereum address</span>
             </label>
             <AddressInput
-              value={form.personEthereumAddress}
+              value={ethereumAddress}
               name="personEthereumAddress"
               placeholder="Ethereum address"
-              onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
+              onChange={(value: string) => setEthereumAddress(value)}
             />
           </div>
           <div className="form-control">
@@ -98,8 +106,8 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
               type="number"
               placeholder="Birth year"
               className="input input-bordered"
-              value={form.birthYear}
-              onChange={e => setForm({ ...form, birthYear: e.target.value as unknown as number })}
+              value={birthYear}
+              onChange={e => setBirthYear(e.target.value)}
             />
           </div>
           <div className="form-control">
