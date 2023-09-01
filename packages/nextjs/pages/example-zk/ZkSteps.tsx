@@ -41,13 +41,15 @@ const ZkSteps: NextPage = () => {
             >
               Previous
             </button>
-            <button
-              className="join-item btn btn-outline"
-              onClick={() => setCurrentStep(currentStep => currentStep + 1)}
-              disabled={currentStep === LAST_STEP}
-            >
-              Next
-            </button>
+            {currentStep !== LAST_STEP && (
+              <button
+                className="join-item btn btn-outline"
+                onClick={() => setCurrentStep(currentStep => currentStep + 1)}
+                disabled={currentStep === LAST_STEP}
+              >
+                Next
+              </button>
+            )}
           </>
         )}
       </div>

@@ -61,6 +61,10 @@ export const parseForm = (form: TForm) => {
 };
 
 export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number }) => {
+  const ethereumAddress = useBirthYearProofsStore(state => state.ethereumAddress);
+  const setEthereumAddress = useBirthYearProofsStore(state => state.setEthereumAddress);
+  const birthYear = useBirthYearProofsStore(state => state.birthYear);
+  const setBirthYear = useBirthYearProofsStore(state => state.setBirthYear);
   const setProof = useBirthYearProofsStore(state => state.setProof);
   const signedBirthYear = useBirthYearProofsStore(state => state.signedBirthYear);
   const signerPublicKey = useBirthYearProofsStore(state => state.signerPublicKey);
@@ -73,7 +77,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
     setIsProofRunning(true);
     const notifcationId = notification.loading("Generating proof...");
     try {
-      const parsedForm = parseForm(form);
+      const parsedForm = parseForm({ ...form, personEthereumAddress: ethereumAddress, birthYear });
       const { proof } = await generateProof("LessThanSignedAge", parsedForm as ParsedArgs);
       setProof(`0x${proof}`);
       notification.success("Proof generated");
@@ -120,8 +124,8 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
                 type="number"
                 placeholder="Signed birth year"
                 className="input input-bordered"
-                value={form.birthYear}
-                onChange={e => setForm({ ...form, birthYear: e.target.value as unknown as number })}
+                value={birthYear}
+                onChange={e => setBirthYear(e.target.value)}
               />
             </div>
             <div className="form-control">
@@ -133,7 +137,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
                 placeholder="Required birth year"
                 className="input input-bordered"
                 value={form.requiredBirthYear}
-                onChange={e => setForm({ ...form, requiredBirthYear: e.target.value as unknown as number })}
+                onChange={e => setForm({ ...form, requiredBirthYear: Number(e.target.value) })}
               />
             </div>
           </div>
@@ -168,10 +172,10 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
               <span className="label-text">*Ethereum address signature</span>
             </label>
             <AddressInput
-              value={form.personEthereumAddress}
+              value={ethereumAddress}
               name="personEthereumAddress"
               placeholder="Ethereum address in signature"
-              onChange={(val: string) => setForm({ ...form, personEthereumAddress: val })}
+              onChange={(value: string) => setEthereumAddress(value)}
             />
           </div>
           <div className="form-control mt-6">
