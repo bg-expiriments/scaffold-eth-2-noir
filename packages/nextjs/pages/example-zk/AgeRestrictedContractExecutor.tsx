@@ -1,10 +1,10 @@
 import { CodeText } from "./CodeText";
-import SignedStats from "./SignedStats";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
 
 export const AgeRestrictedContractExecutor = () => {
   const proof = useBirthYearProofsStore(state => state.proof);
+  const setProof = useBirthYearProofsStore(state => state.setProof);
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "BalloonVendor",
@@ -16,8 +16,8 @@ export const AgeRestrictedContractExecutor = () => {
   });
 
   return (
-    <>
-      <div className="flex-shrink-0 w-full max-w-5xl px-6 pb-6">
+    <div className="grid grid-cols-2 gap-6 max-w-7xl">
+      <div>
         <p>
           The ballon store is using the same <CodeText text="TokenVendor.sol" /> as the{" "}
           <a className="link" href="https://speedrunethereum.com/challenge/token-vendor">
@@ -36,25 +36,27 @@ export const AgeRestrictedContractExecutor = () => {
           Now Alice gets a balloon🎈 <strong>token</strong>, that she can redeem at the store to get an actual ballloon.
         </p>
       </div>
-      <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
-        <SignedStats />
-        <div className="card-body">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Your proof of having the required birth year ✅</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Proof of required birthyear"
-              value={proof}
-              className="input input-bordered"
-            />
+      <div>
+        <div className="card w-full shadow-2xl bg-base-100">
+          <div className="card-body">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Your proof of having the required birth year ✅</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Proof of required birthyear"
+                value={proof}
+                className="input input-bordered"
+                onChange={e => setProof(e.target.value as `0x${string}`)}
+              />
+            </div>
+            <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
+              Get free balloon 🎈
+            </button>
           </div>
-          <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
-            Get free balloon 🎈
-          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
