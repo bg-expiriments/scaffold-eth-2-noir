@@ -5,7 +5,6 @@ import { shortenHashString } from "~~/utils/example-zk/short-hash-string";
 type StatProps = {
   stat: string;
   title: string;
-  description: string;
 };
 
 const Stat = (props: StatProps) => {
@@ -21,7 +20,6 @@ const Stat = (props: StatProps) => {
       </div>
       <div className="stat-title">{props.title}</div>
       <div className="stat-value text-base">{shortenHashString(props.stat)}</div>
-      <div className="stat-desc">{props.description}</div>
     </div>
   );
 };
