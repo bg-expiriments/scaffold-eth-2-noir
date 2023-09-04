@@ -6,6 +6,7 @@ import { AddressInput } from "~~/components/scaffold-eth/Input/AddressInput";
 import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
 import { notification } from "~~/utils/scaffold-eth";
 
+// Hardcoded Trusted Third Party(TTP) private key
 const THIRD_PARTY_PRIVATE_KEY = "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d";
 
 type TForm = {
@@ -20,6 +21,7 @@ const getInitialFormState = (aliceDefaultAge: number): TForm => ({
   thirdPartyPrivateKey: THIRD_PARTY_PRIVATE_KEY,
 });
 
+// This function is called when the TTP 🏛 generates the signature 📜
 export const signBirthYear = async (form: TForm) => {
   const { personEthereumAddress, birthYear, thirdPartyPrivateKey } = form;
   const claimHash = ethers.utils.solidityKeccak256(["address", "uint16"], [personEthereumAddress, birthYear]);
@@ -62,15 +64,15 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
   return (
     <div className="grid grid-cols-2 gap-6 max-w-7xl">
       <div>
+        <h1 className="text-3xl font-bold">Step 1: Town Hall 🏛 generates the signature 📜</h1>
         <p>
-          Alice recognizes that, in order for her to not having to share her age with the balloon store, she at least
-          has to share her age with a third party that the balloon store also can trust. In this case, the balloon store
-          has selected the Town Hall to be the trusted third party🏛. Alice accepts that she has to share her age with
-          the Town Hall.
+          Alice recognizes that, in order for her to not have to share her age with the balloon store, she at least has
+          to share her age with a trusted third party. In this case, the balloon store has selected the Town Hall to be
+          the trusted third party🏛. Alice accepts the fact that she has to share her age with the Town Hall.
         </p>
         <p>
           When the balloon store implemented their zero knowledge proof solution they made sure that they are using the
-          same format as the Town Hall for constructing the claim that is being signed📜. In this project the claim
+          same format as the Town Hall for constructing the claim that is being signed. In this project the claim
           construction can be found in{" "}
           <a href="https://github.com/Kryha/scaffold-eth-2-noir/blob/main/packages/nextjs/pages/example-zk/BirthDateSignature.tsx">
             <CodeText text="packages/nextjs/pages/example-zk/BirthDateSignature.tsx" />
@@ -84,10 +86,11 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
           <CodeText text="construct_claim_payload" />) when implemented as a Noir circuit.
         </p>
         <p>
-          What the Town Hall actually signs is that they confirm that Alice is born on a certain year AND that she has
+          What the Town Hall actually signs is that they confirm that Alice is born in a certain year AND that she has
           control over a certain Ethereum address. The check of Alice&apos;s Ethereum address is not done in this
           example. The code for producing the signature currently includes the Town Hall&apos;s hardcoded private key.
-          This can be improved in many ways, but at a minium it should be provided to the UI by a Town Hall employee.
+          This can be improved in many ways, but at a minimum it should be the Towna Hall eployee that provides it to
+          the UI.
         </p>
       </div>
       <div>

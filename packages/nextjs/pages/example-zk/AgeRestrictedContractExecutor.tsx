@@ -8,7 +8,7 @@ export const AgeRestrictedContractExecutor = () => {
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "BalloonVendor",
-    functionName: "redeemFreeToken",
+    functionName: "getFreeToken",
     args: [proof],
     onBlockConfirmation: txnReceipt => {
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
@@ -18,14 +18,21 @@ export const AgeRestrictedContractExecutor = () => {
   return (
     <div className="grid grid-cols-2 gap-6 max-w-7xl">
       <div>
+        <h1 className="text-3xl font-bold">Step 3: Getting the balloon🎈 NFT</h1>
         <p>
-          The ballon store is using the same <CodeText text="TokenVendor.sol" /> as the{" "}
+          The ballon store is using the same <CodeText text="TokenVendor.sol" /> contract as the{" "}
           <a className="link" href="https://speedrunethereum.com/challenge/token-vendor">
             Speedrun Ethereum challange
           </a>
-          , with some additions. They&apos;ve added a function <CodeText text="redeemFreeToken" />, with the{" "}
+          , with some additions. They&apos;ve added a function <CodeText text="getFreeToken" />, with the{" "}
           <CodeText text="onlyKids" />
-          -modifier. The modifier constructs the public inputs and calls the proof-verifier (
+          -modifier. This implementation can be found in{" "}
+          <a href="https://github.com/Kryha/scaffold-eth-2-noir/blob/main/packages/hardhat/contracts/BalloonVendor.sol">
+            <CodeText text="packages/hardhat/contracts/BalloonVendor.sol" />
+          </a>{" "}
+          in our project.
+          <br />
+          The modifier constructs the public inputs and calls the proof-verifier in (
           <a href="https://github.com/Kryha/scaffold-eth-2-noir/blob/main/packages/hardhat/contracts/verifiers/LessThanSignedAge.sol">
             <CodeText text="packages/hardhat/contracts/verifiers/LessThanSignedAge.sol" />
           </a>
@@ -33,7 +40,8 @@ export const AgeRestrictedContractExecutor = () => {
           what we are actually proving.
         </p>
         <p>
-          Now Alice gets a balloon🎈 <strong>token</strong>, that she can redeem at the store to get an actual ballloon.
+          Now that Alice has received a balloon <strong>token</strong>, she can redeem that digital token at the store
+          to get the actual ballloon.
         </p>
       </div>
       <div>
