@@ -31,12 +31,14 @@ const ZkSteps: NextPage = () => {
   const step2ClassName = currentStep >= 2 ? "step-primary" : "";
   const step3ClassName = currentStep >= 3 ? "step-primary" : "";
   const previousButtonDisabled = currentStep === INTRO_STEP;
+  const isNotIntroStep = currentStep !== INTRO_STEP;
+  const isNotLastStep = currentStep !== LAST_STEP;
 
   return (
-    <>
-      <SignedStats />
+    <div className="flex justify-center items-center flex-col px-4 w-full">
+      {isNotIntroStep && <SignedStats />}
       {renderZkSteps(currentStep, setCurrentStep)}
-      {currentStep !== INTRO_STEP && (
+      {isNotIntroStep && (
         <>
           <ul className="steps pt-12 steps-vertical md:steps-horizontal">
             <li className="step step-primary">Third party signature 🏛📜</li>
@@ -46,15 +48,15 @@ const ZkSteps: NextPage = () => {
           <div className="join grid grid-cols-2 mt-8 gap-8">
             <>
               <button
-                className="join-item btn btn-outline"
+                className="join-item btn btn-secondary"
                 onClick={() => setCurrentStep(currentStep => currentStep - 1)}
                 disabled={previousButtonDisabled}
               >
                 Previous
               </button>
-              {currentStep !== LAST_STEP && (
+              {isNotLastStep && (
                 <button
-                  className="join-item btn btn-outline"
+                  className="join-item btn btn-secondary"
                   onClick={() => setCurrentStep(currentStep => currentStep + 1)}
                 >
                   Next
@@ -64,7 +66,7 @@ const ZkSteps: NextPage = () => {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

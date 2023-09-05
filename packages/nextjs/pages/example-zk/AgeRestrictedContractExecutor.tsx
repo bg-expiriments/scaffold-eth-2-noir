@@ -59,7 +59,7 @@ export const AgeRestrictedContractExecutor = () => {
                 onChange={e => setProof(e.target.value as `0x${string}`)}
               />
             </div>
-            <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
+            <button className="btn btn-secondary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
               Get free balloon 🎈
             </button>
           </div>

@@ -2,12 +2,12 @@
 module.exports = {
   content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}", "./utils/**/*.{js,ts,jsx,tsx}"],
   plugins: [require("daisyui")],
-  darkTheme: "scaffoldEthDark",
+  darkTheme: "darkTheme",
   // DaisyUI theme colors
   daisyui: {
     themes: [
       {
-        scaffoldEth: {
+        lightTheme: {
           primary: "#93BBFB",
           "primary-content": "#212638",
           secondary: "#DAE8FF",
@@ -33,20 +33,20 @@ module.exports = {
         },
       },
       {
-        scaffoldEthDark: {
-          primary: "#212638",
-          "primary-content": "#F9FBFF",
-          secondary: "#323f61",
-          "secondary-content": "#F9FBFF",
-          accent: "#4969A6",
-          "accent-content": "#F9FBFF",
-          neutral: "#F9FBFF",
-          "neutral-content": "#385183",
-          "base-100": "#385183",
-          "base-200": "#2A3655",
-          "base-300": "#212638",
-          "base-content": "#F9FBFF",
-          info: "#385183",
+        darkTheme: {
+          primary: "#231735",
+          "primary-content": "#F0F0F0",
+          secondary: "#2F1F49",
+          "secondary-content": "#F0F0F0",
+          accent: "#99A5EE",
+          "accent-content": "#231735",
+          neutral: "#F0F0F0",
+          "neutral-content": "#231735",
+          "base-100": "#231735",
+          "base-200": "#231735",
+          "base-300": "#2F1F49",
+          "base-content": "#F0F0F0",
+          info: "#231735",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
@@ -62,18 +62,18 @@ module.exports = {
       {
         exampleUi: {
           primary: "#000000",
-          "primary-content": "#ffffff",
+          "primary-content": "#F0F0F0",
           secondary: "#FF6644",
           "secondary-content": "#212638",
-          accent: "#93BBFB",
+          accent: "#F0F0F0",
           "accent-content": "#212638",
           neutral: "#f3f3f3",
           "neutral-content": "#212638",
-          "base-100": "#ffffff",
+          "base-100": "#F0F0F0",
           "base-200": "#f1f1f1",
           "base-300": "#d0d0d0",
           "base-content": "#212638",
-          info: "#93BBFB",
+          info: "#F0F0F0",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
