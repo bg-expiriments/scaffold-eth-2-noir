@@ -128,7 +128,7 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
               />
             </div>
             <div className="form-control">
-              <button className="btn btn-primary mt-6" onClick={handleSubmission}>
+              <button className="btn btn-secondary mt-6" onClick={handleSubmission}>
                 Sign birth year 📜
               </button>
             </div>

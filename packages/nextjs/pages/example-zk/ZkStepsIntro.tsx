@@ -5,7 +5,7 @@ type ZkStepsIntroProps = { setCurrentStep: Dispatch<SetStateAction<number>>; yea
 
 export const ZkStepsIntro = ({ setCurrentStep, yearTenYearsAgo }: ZkStepsIntroProps) => {
   return (
-    <div className="hero bg-base-200">
+    <div className="hero">
       <div className="hero-content text-center">
         <div className="max-w-3xl">
           <div className="flex flex-col justify-center items-center">
@@ -33,7 +33,7 @@ export const ZkStepsIntro = ({ setCurrentStep, yearTenYearsAgo }: ZkStepsIntroPr
               </li>
             </ol>
           </div>
-          <button className="btn btn-primary mt-6" onClick={() => setCurrentStep(currentStep => currentStep + 1)}>
+          <button className="btn btn-secondary mt-6" onClick={() => setCurrentStep(currentStep => currentStep + 1)}>
             Get Started
           </button>
         </div>

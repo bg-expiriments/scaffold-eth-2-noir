@@ -194,7 +194,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
               />
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary" onClick={handleSubmission} disabled={isProofRunning}>
+              <button className="btn btn-secondary" onClick={handleSubmission} disabled={isProofRunning}>
                 Generate proof ✅
               </button>
             </div>
