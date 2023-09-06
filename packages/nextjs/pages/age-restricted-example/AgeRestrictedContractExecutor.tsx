@@ -1,16 +1,33 @@
+import { useState } from "react";
 import { CodeText } from "./CodeText";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
+
+export const BalloonCount = (props: { sender: string }) => {
+  const { data } = useScaffoldContractRead({
+    contractName: "BalloonToken",
+    functionName: "balanceOf",
+    args: [props.sender],
+  });
+
+  if (data?.toString()) {
+    return <p>Balloon count: {data?.toString()}</p>;
+  }
+
+  return <></>;
+};
 
 export const AgeRestrictedContractExecutor = () => {
   const proof = useBirthYearProofsStore(state => state.proof);
   const setProof = useBirthYearProofsStore(state => state.setProof);
+  const [sender, setSender] = useState("");
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "BalloonVendor",
     functionName: "getFreeToken",
     args: [proof],
     onBlockConfirmation: txnReceipt => {
+      setSender(txnReceipt.from);
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
     },
   });
@@ -47,6 +64,7 @@ export const AgeRestrictedContractExecutor = () => {
       <div>
         <div className="card w-full shadow-2xl bg-base-100">
           <div className="card-body">
+            <BalloonCount sender={sender} />
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Your proof of having the required birth year ✅</span>
