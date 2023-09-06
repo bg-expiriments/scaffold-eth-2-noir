@@ -68,7 +68,7 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
         <p>
           Alice recognizes that, in order for her to not have to share her age with the balloon store, she at least has
           to share her age with a trusted third party. In this case, the balloon store has selected the Town Hall to be
-          the trusted third party🏛. Alice accepts the fact that she has to share her age with the Town Hall.
+          the trusted third party 🏛. Alice accepts the fact that she has to share her age with the Town Hall.
         </p>
         <p>
           When the balloon store implemented their zero knowledge proof solution they made sure that they are using the
@@ -117,7 +117,7 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Third party&apos;s🏛 private key for signing</span>
+                <span className="label-text">Third party&apos;s 🏛 private key for signing</span>
               </label>
               <input
                 type="text"
