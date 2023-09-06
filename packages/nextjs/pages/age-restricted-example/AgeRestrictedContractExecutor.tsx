@@ -18,7 +18,7 @@ export const AgeRestrictedContractExecutor = () => {
   return (
     <div className="grid grid-cols-2 gap-6 max-w-7xl">
       <div>
-        <h1 className="text-3xl font-bold">Step 3: Getting the balloon🎈 NFT</h1>
+        <h1 className="text-3xl font-bold">Step 3: Getting the balloon 🎈</h1>
         <p>
           The ballon store is using the same <CodeText text="TokenVendor.sol" /> contract as the{" "}
           <a className="link" href="https://speedrunethereum.com/challenge/token-vendor">
