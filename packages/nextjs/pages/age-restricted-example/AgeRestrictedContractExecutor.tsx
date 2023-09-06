@@ -78,7 +78,7 @@ export const AgeRestrictedContractExecutor = () => {
               />
             </div>
             <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
-              Get free balloon 🎈
+              Get balloon 🎈
             </button>
           </div>
         </div>
