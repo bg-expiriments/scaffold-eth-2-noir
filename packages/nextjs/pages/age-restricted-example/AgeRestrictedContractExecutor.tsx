@@ -62,7 +62,7 @@ export const AgeRestrictedContractExecutor = () => {
         </p>
       </div>
       <div>
-        <div className="card w-full shadow-2xl bg-base-100">
+        <div className="card w-full shadow-2xl bg-base-300">
           <div className="card-body">
             <BalloonCount sender={sender} />
             <div className="form-control">
@@ -77,7 +77,7 @@ export const AgeRestrictedContractExecutor = () => {
                 onChange={e => setProof(e.target.value as `0x${string}`)}
               />
             </div>
-            <button className="btn btn-secondary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
+            <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
               Get free balloon 🎈
             </button>
           </div>

@@ -36,7 +36,7 @@ module.exports = {
         darkTheme: {
           primary: "#231735",
           "primary-content": "#F0F0F0",
-          secondary: "#2F1F49",
+          secondary: "#523B78",
           "secondary-content": "#F0F0F0",
           accent: "#99A5EE",
           "accent-content": "#231735",
@@ -44,7 +44,7 @@ module.exports = {
           "neutral-content": "#231735",
           "base-100": "#231735",
           "base-200": "#231735",
-          "base-300": "#2F1F49",
+          "base-300": "#523B78",
           "base-content": "#F0F0F0",
           info: "#231735",
           success: "#34EEB6",

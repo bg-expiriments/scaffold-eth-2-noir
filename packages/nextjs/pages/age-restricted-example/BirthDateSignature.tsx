@@ -90,7 +90,7 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
         </p>
       </div>
       <div>
-        <div className="card w-full shadow-2xl bg-base-100">
+        <div className="card w-full shadow-2xl bg-base-300">
           <div className="card-body">
             <div className="form-control">
               <label className="label">
@@ -128,7 +128,7 @@ export const BirthDateSignature = ({ aliceDefaultAge }: { aliceDefaultAge: numbe
               />
             </div>
             <div className="form-control">
-              <button className="btn btn-secondary mt-6" onClick={handleSubmission}>
+              <button className="btn btn-primary mt-6" onClick={handleSubmission}>
                 Sign birth year 📜
               </button>
             </div>
