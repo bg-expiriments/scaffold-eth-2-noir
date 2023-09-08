@@ -142,7 +142,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
         </p>
       </div>
       <div>
-        <div className="card w-full shadow-2xl bg-base-100">
+        <div className="card w-full shadow-2xl bg-base-300">
           <div className="card-body">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-8">
               <div className="form-control">
@@ -208,7 +208,7 @@ export const GenerateProof = ({ requiredBirthYear }: { requiredBirthYear: number
               />
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-secondary" onClick={handleSubmission} disabled={isProofRunning}>
+              <button className="btn btn-primary" onClick={handleSubmission} disabled={isProofRunning}>
                 Generate proof ✅
               </button>
             </div>

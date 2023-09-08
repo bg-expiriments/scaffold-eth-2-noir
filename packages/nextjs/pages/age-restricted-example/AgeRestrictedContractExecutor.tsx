@@ -1,16 +1,37 @@
+import { useState } from "react";
 import { CodeText } from "./CodeText";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useBirthYearProofsStore } from "~~/services/store/birth-year-proofs";
+
+export const BalloonCount = (props: { count: string | undefined }) => {
+  if (props.count) {
+    return <p>Balloon count: {props.count}</p>;
+  }
+
+  return <></>;
+};
 
 export const AgeRestrictedContractExecutor = () => {
   const proof = useBirthYearProofsStore(state => state.proof);
   const setProof = useBirthYearProofsStore(state => state.setProof);
+  const [sender, setSender] = useState("");
+
+  const { data, refetch } = useScaffoldContractRead({
+    contractName: "BalloonToken",
+    functionName: "balanceOf",
+    args: [sender],
+  });
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "BalloonVendor",
     functionName: "getFreeToken",
     args: [proof],
     onBlockConfirmation: txnReceipt => {
+      if (sender) {
+        refetch();
+      }
+
+      setSender(txnReceipt.from);
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
     },
   });
@@ -18,7 +39,7 @@ export const AgeRestrictedContractExecutor = () => {
   return (
     <div className="grid grid-cols-2 gap-6 max-w-7xl">
       <div>
-        <h1 className="text-3xl font-bold">Step 3: Getting the balloon🎈 NFT</h1>
+        <h1 className="text-3xl font-bold">Step 3: Getting the balloon 🎈</h1>
         <p>
           The <strong>Ballon Store</strong> is using the same <CodeText text="TokenVendor.sol" /> contract as the{" "}
           <a className="link" href="https://speedrunethereum.com/challenge/token-vendor">
@@ -45,8 +66,9 @@ export const AgeRestrictedContractExecutor = () => {
         </p>
       </div>
       <div>
-        <div className="card w-full shadow-2xl bg-base-100">
+        <div className="card w-full shadow-2xl bg-base-300">
           <div className="card-body">
+            <BalloonCount count={data?.toString()} />
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Your proof of having the required birth year ✅</span>
@@ -59,8 +81,8 @@ export const AgeRestrictedContractExecutor = () => {
                 onChange={e => setProof(e.target.value as `0x${string}`)}
               />
             </div>
-            <button className="btn btn-secondary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
-              Get free balloon 🎈
+            <button className="btn btn-primary mt-6" onClick={() => writeAsync()} disabled={isLoading}>
+              Get balloon 🎈
             </button>
           </div>
         </div>

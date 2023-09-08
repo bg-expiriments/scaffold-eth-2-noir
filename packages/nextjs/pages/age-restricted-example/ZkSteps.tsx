@@ -43,7 +43,7 @@ const ZkSteps: NextPage = () => {
           <ul className="steps pt-12 steps-vertical md:steps-horizontal">
             <li className="step step-primary">Third party signature 🏛📜</li>
             <li className={`step ${step2ClassName}`}>Generate proof ✅</li>
-            <li className={`step ${step3ClassName}`}>Call contract🎈</li>
+            <li className={`step ${step3ClassName}`}>Call contract 🎈</li>
           </ul>
           <div className="join grid grid-cols-2 mt-8 gap-8">
             <>
