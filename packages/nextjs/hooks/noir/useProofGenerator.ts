@@ -3,7 +3,7 @@ import { NoirBrowser } from "~~/utils/noir/noirBrowser";
 
 let isGeneratingProof = false;
 
-type HexString = `0x${string}`;
+export type HexString = `0x${string}`;
 export type ParsedArgs = Record<string, HexString[]>;
 
 function formatArgs(parameterWitnesses: CircuitParameterWitnesses, parsedArgs: ParsedArgs): HexString[] {
@@ -37,6 +37,7 @@ function getPublicInputsLength(parameters: CircuitAbiParameters) {
     }, 0);
 }
 
+// This function generates the proof ✅
 export const generateProof = async (circuitName: CircuitName, parsedArgs: ParsedArgs) => {
   isGeneratingProof = true;
   const noir = new NoirBrowser();
@@ -52,7 +53,7 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
 
     return {
       witness: Buffer.from(witness).toString("hex"),
-      proof: "0x" + Buffer.from(slicedProof).toString("hex"),
+      proof: Buffer.from(slicedProof).toString("hex"),
     };
   } finally {
     isGeneratingProof = false;
@@ -60,25 +61,16 @@ export const generateProof = async (circuitName: CircuitName, parsedArgs: Parsed
   }
 };
 
-const generateProofWrapper = (circuitName: CircuitName, form: Record<string, any>) => {
-  return async () => {
-    const res = await generateProof(circuitName, parseForm(form));
+const generateProofWrapper = (circuitName: CircuitName) => {
+  return async (form: Record<string, any>) => {
+    const res = await generateProof(circuitName, form);
     return res;
   };
 };
 
-const parseForm = (form: Record<string, any>) => {
-  const parameterObj: ParsedArgs = {};
-  for (const [key, value] of Object.entries(form)) {
-    const [, k] = key.split("_");
-    parameterObj[k] = JSON.parse(value);
-  }
-  return parameterObj;
-};
-
-export default function useProofGenerator(circuitName: CircuitName, form: Record<string, any>) {
+export default function useProofGenerator(circuitName: CircuitName) {
   return {
     isLoading: isGeneratingProof,
-    generateProof: generateProofWrapper(circuitName, form),
+    generateProof: generateProofWrapper(circuitName),
   };
 }

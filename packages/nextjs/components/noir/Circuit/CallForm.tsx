@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CallFormInput } from "./CallFormInput";
 import { ProofResult } from "./Proof";
 import { getFunctionInputKey, getInitialFormState } from "./utilsCircuit";
-import useProofGenerator from "~~/hooks/noir/useProofGenerator";
+import useProofGenerator, { ParsedArgs } from "~~/hooks/noir/useProofGenerator";
 import { useProvingNotifications } from "~~/hooks/noir/useProvingNotifications";
 import { Proof } from "~~/interfaces";
 import { CircuitAbiParameters, CircuitName } from "~~/utils/noir/circuit";
@@ -13,15 +13,24 @@ type TCallFormProps = {
   params: CircuitAbiParameters;
 };
 
+const parseForm = (form: Record<string, any>) => {
+  const parameterObj: ParsedArgs = {};
+  for (const [key, value] of Object.entries(form)) {
+    const [, k] = key.split("_");
+    parameterObj[k] = JSON.parse(value);
+  }
+  return parameterObj;
+};
+
 export const CallForm = ({ circuitName, params }: TCallFormProps) => {
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(circuitName, params));
   const withNotifications = useProvingNotifications();
-  const { isLoading, generateProof } = useProofGenerator(circuitName, form);
+  const { isLoading, generateProof } = useProofGenerator(circuitName);
   const [displayedGenerationResult, setDisplayedGenerationResult] = useState<Proof>();
 
   const handleWrite = async () => {
     try {
-      const proofProm = generateProof();
+      const proofProm = generateProof(parseForm(form));
       withNotifications(proofProm);
       const { proof } = await proofProm;
       // TODO: below does not refresh the UI

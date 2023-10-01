@@ -30,3 +30,13 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+.step:before,
+.step:after {
+  background-color: hsl(var(--s)) !important;
+}
+
+.step-primary:before,
+.step-primary:after {
+  background-color: hsl(var(--a)) !important;
+}
